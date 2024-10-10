@@ -12,7 +12,8 @@ export const getCurrentUser = async () => {
     // if account exists, get the user from the user table or document
     const current_user = await db.listDocuments(
       appWriteConfig.databaseId,
-      appWriteConfig.userCollectionId[Query.equal('accountId', current_account.$id) as any] // specify the query i.e how you want to get it
+      appWriteConfig.userCollectionId,
+      [Query.equal('accountId', current_account.$id) as any] // specify the query i.e how you want to get it
     );
 
     if (!current_user) throw Error; // if this user does not exist

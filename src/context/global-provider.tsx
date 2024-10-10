@@ -3,12 +3,13 @@ import { createContext, useContext, useState, useEffect, Dispatch, SetStateActio
 import { Models } from 'react-native-appwrite';
 
 interface UserDoc extends Models.Document {}
+interface UserSession extends Models.Session {}
 
 type GlobalContextType = {
   isLoggedIn: boolean;
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
-  user: UserDoc | null;
-  setUser: Dispatch<SetStateAction<UserDoc | null>>;
+  user: UserDoc | UserSession | null;
+  setUser: Dispatch<SetStateAction<UserDoc | UserSession | null>>;
   isLoading: boolean;
 };
 
@@ -17,20 +18,22 @@ type GlobalContextProviderProps = {
 };
 
 const GlobalContext = createContext<GlobalContextType | null>(null);
-export const useGlobalContext = () => useContext(GlobalContext);
+export const useGlobalContext = () => useContext(GlobalContext)!;
 
 const GlobalProvider = ({ children }: GlobalContextProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<UserDoc | null>(null);
+  const [user, setUser] = useState<UserDoc | UserSession | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    sessionChecker;
+    sessionChecker();
   }, []);
 
   const sessionChecker = async () => {
     try {
       const res = await getCurrentUser();
+      console.log(res);
+
       if (res) {
         setIsLoggedIn(true);
         setUser(res);

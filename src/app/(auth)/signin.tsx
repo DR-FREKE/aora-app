@@ -7,6 +7,7 @@ import AppButton from '@/components/widgets/button';
 import { ForgotPasswordComp, NoAccountComp } from '@/components/auth/auth';
 import { signIn } from '@/lib/appwrite/users/signin.users';
 import { router } from 'expo-router';
+import { useGlobalContext } from '@/context/global-provider';
 
 export type SignInProps = {
   email: string;
@@ -14,6 +15,7 @@ export type SignInProps = {
 };
 
 const SignIn = () => {
+  const { setIsLoggedIn, setUser } = useGlobalContext();
   const [isLoading, setIsLoading] = useState(false);
   const { register, control, handleSubmit, formState, reset } = useForm<SignInProps>({ mode: 'onChange' });
   const { errors, isDirty, isValid } = formState;
@@ -27,8 +29,10 @@ const SignIn = () => {
       const result = await signIn(email, password);
 
       // set to global state using context API
+      setUser(result);
+      setIsLoggedIn(true);
 
-      router.replace('/home');
+      router.replace('(tabs)');
     } catch (error: any) {
       Alert.alert(error.message);
     } finally {
