@@ -8,6 +8,7 @@ import { useFonts } from 'expo-font';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { clsx } from 'clsx';
 import 'react-native-url-polyfill/auto';
+import GlobalProvider from '@/context/global-provider';
 
 SplashScreen.preventAutoHideAsync(); // prevents splashscreen from auto hiding before our asset loading is complete. Hence the Splashscreen will continue to show until our fonts and other assets have loaded
 
@@ -37,7 +38,9 @@ const RootLayout = () => {
   return (
     <SafeAreaView className={clsx('h-full', darkmode ? 'bg-primary' : '')}>
       {/* <ThemeProvider value={color_scheme !== 'dark' ? DarkTheme : DefaultTheme}> */}
-      <Slot />
+      <GlobalProvider>
+        <Slot />
+      </GlobalProvider>
       <StatusBar style={!darkmode ? 'dark' : 'light'} backgroundColor={darkmode ? '#161622' : '#F2F2F2'} />
       {/* </ThemeProvider> */}
     </SafeAreaView>

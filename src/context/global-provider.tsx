@@ -17,7 +17,7 @@ type GlobalContextProviderProps = {
 };
 
 const GlobalContext = createContext<GlobalContextType | null>(null);
-export const useGlobalContext = useContext(GlobalContext);
+export const useGlobalContext = () => useContext(GlobalContext);
 
 const GlobalProvider = ({ children }: GlobalContextProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,20 +25,24 @@ const GlobalProvider = ({ children }: GlobalContextProviderProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async () => {
-      try {
-        const res = await getCurrentUser();
-        if (res) {
-          setIsLoggedIn(true);
-          setUser(res);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    sessionChecker;
   }, []);
+
+  const sessionChecker = async () => {
+    try {
+      const res = await getCurrentUser();
+      if (res) {
+        setIsLoggedIn(true);
+        setUser(res);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return <GlobalContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser, isLoading }}>{children}</GlobalContext.Provider>;
 };
+
+export default GlobalProvider;
