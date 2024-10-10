@@ -26,7 +26,15 @@ export const TextField = React.forwardRef<Ref, TextFieldProps>(({ label, name, c
     <View className={clsx('space-y-2 my-3.5', className)}>
       <Text className="text-base text-gray-100 font-poppins-medium">{label}</Text>
       <View className="w-full px-4 h-16 bg-black-100 border-2 border-black-200 rounded-lg focus:border-secondary">
-        <TextInput value={value} autoCapitalize="none" onChangeText={onChange} placeholder={placeholder} keyboardType={type} className="flex-1 text-white font-poppins-semi-bold" placeholderTextColor={'#7B7B8B'} />
+        <TextInput
+          value={value}
+          autoCapitalize="none"
+          onChangeText={onChange}
+          placeholder={placeholder}
+          keyboardType={type}
+          className="flex-1 text-white font-poppins-semi-bold"
+          placeholderTextColor={'#7B7B8B'}
+        />
       </View>
     </View>
   );
@@ -42,7 +50,15 @@ export const PasswordField = React.forwardRef<Ref, TextFieldProps>(({ label, nam
     <View className={clsx('space-y-2 my-3.5', className)}>
       <Text className="text-base text-gray-100 font-poppins-medium">{label}</Text>
       <View className="w-full px-4 h-16 bg-black-100 border-2 border-black-200 rounded-lg focus:border-secondary flex-row items-center">
-        <TextInput value={value} autoCapitalize="none" onChangeText={onChange} placeholder={placeholder} className="flex-1 text-white font-poppins-semi-bold" placeholderTextColor={'#7B7B8B'} secureTextEntry={!visible} />
+        <TextInput
+          value={value}
+          autoCapitalize="none"
+          onChangeText={onChange}
+          placeholder={placeholder}
+          className="flex-1 text-white font-poppins-semi-bold"
+          placeholderTextColor={'#7B7B8B'}
+          secureTextEntry={!visible}
+        />
         <TouchableOpacity onPress={() => setVisible(!visible)}>{!visible ? <Eye color="#7B7B8B" /> : <EyeSlash color="#7B7B8B" />}</TouchableOpacity>
       </View>
     </View>

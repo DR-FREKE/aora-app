@@ -1,11 +1,12 @@
-import { View, Text, ScrollView, Image, KeyboardAvoidingView, Platform } from 'react-native';
-import React from 'react';
+import { View, Text, ScrollView, Image, Alert } from 'react-native';
+import React, { useState } from 'react';
 import { images } from '@/constants';
 import { PasswordField, TextField } from '@/components/widgets/form';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import AppButton from '@/components/widgets/button';
-import { ForgotPasswordComp, NoAccountComp } from '@/components/auth/auth';
+import { NoAccountComp } from '@/components/auth/auth';
 import { createUser } from '@/lib/appwrite/users/create.users';
+import { router } from 'expo-router';
 
 export type SignUpProps = {
   username: string;
@@ -15,15 +16,27 @@ export type SignUpProps = {
 
 const SignUp = () => {
   const { register, control, handleSubmit, formState, reset } = useForm<SignUpProps>({ mode: 'onChange' });
-  const { errors, isDirty, isValid, isLoading } = formState;
+  const { errors, isDirty, isValid } = formState;
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit: SubmitHandler<SignUpProps> = async data => {
-    // call appwrite function to create a user in Appwrite DB
-    const { email, password, username } = data;
-    createUser(email, password, username);
+    setIsLoading(true);
 
-    // reset the form
-    reset();
+    try {
+      // call appwrite function to create an account and a user in Appwrite DB
+      const { email, password, username } = data;
+      const result = await createUser(email, password, username);
+
+      // set to global state using context API
+
+      router.replace('/home');
+    } catch (error: any) {
+      Alert.alert(error.message);
+    } finally {
+      setIsLoading(false);
+      // reset the form
+      reset();
+    }
   };
 
   return (

@@ -1,10 +1,12 @@
-import { View, Text, ScrollView, Image, KeyboardAvoidingView, Platform } from 'react-native';
-import React from 'react';
+import { View, Text, ScrollView, Image, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import React, { useState } from 'react';
 import { images } from '@/constants';
 import { PasswordField, TextField } from '@/components/widgets/form';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import AppButton from '@/components/widgets/button';
 import { ForgotPasswordComp, NoAccountComp } from '@/components/auth/auth';
+import { signIn } from '@/lib/appwrite/users/signin.users';
+import { router } from 'expo-router';
 
 export type SignInProps = {
   email: string;
@@ -12,13 +14,28 @@ export type SignInProps = {
 };
 
 const SignIn = () => {
-  const { register, control, handleSubmit, formState } = useForm<SignInProps>({ mode: 'onChange' });
+  const [isLoading, setIsLoading] = useState(false);
+  const { register, control, handleSubmit, formState, reset } = useForm<SignInProps>({ mode: 'onChange' });
   const { errors, isDirty, isValid } = formState;
 
   const onSubmit: SubmitHandler<SignInProps> = async data => {
-    //
-    // router.push('(tabs)');
-    console.log(data);
+    setIsLoading(true);
+
+    try {
+      // call appwrite function to sign the user in
+      const { email, password } = data;
+      const result = await signIn(email, password);
+
+      // set to global state using context API
+
+      router.replace('/home');
+    } catch (error: any) {
+      Alert.alert(error.message);
+    } finally {
+      setIsLoading(false);
+      // reset the form
+      reset();
+    }
   };
 
   return (
@@ -30,7 +47,7 @@ const SignIn = () => {
           <TextField label="Email" type="email-address" control={control} placeholder="Your unique email" {...register('email', { required: true })} />
           <PasswordField label="Password" placeholder="Your unique password" control={control} {...register('password', { required: true })} />
           <ForgotPasswordComp path="/forgot-password" />
-          <AppButton name="Log In" classname="mt-5" onPress={handleSubmit(onSubmit)} disabled={!isDirty || !isValid} />
+          <AppButton name="Log In" classname="mt-5" onPress={handleSubmit(onSubmit)} disabled={!isDirty || !isValid} loading={isLoading} />
         </KeyboardAvoidingView>
         <NoAccountComp path="/signup" />
       </View>

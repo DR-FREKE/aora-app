@@ -4,11 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Home = () => {
   return (
-    <SafeAreaView className="h-full bg-primary">
-      <View className="flex-1 justify-center items-center">
-        <Text className="font-poppins-bold capitalize">Home</Text>
-      </View>
-    </SafeAreaView>
+    <View className="flex-1 justify-center items-center">
+      <Text className="font-poppins-bold capitalize">Home</Text>
+    </View>
   );
 };
 

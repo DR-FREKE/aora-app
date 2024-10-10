@@ -14,10 +14,15 @@ type AppButtonType = {
 
 const AppButton = ({ name, loading, icon, disabled, onPress, classname, textClassName }: AppButtonType) => {
   return (
-    <TouchableOpacity className={clsx('bg-secondary rounded-lg min-h-[62px] justify-center items-center', classname, loading || disabled ? 'opacity-50' : '')} onPress={onPress} activeOpacity={0.7} disabled={disabled || loading}>
+    <TouchableOpacity
+      className={clsx('bg-secondary rounded-lg min-h-[62px] justify-center items-center', classname, loading || disabled ? 'opacity-50' : '')}
+      onPress={onPress}
+      activeOpacity={0.7}
+      disabled={disabled || loading}
+    >
       <View className="flex-row items-center gap-2">
         {icon}
-        <Text className={clsx('text-primary font-poppins-semi-bold text-lg', textClassName)}>{name}</Text>
+        <Text className={clsx('text-primary font-poppins-semi-bold text-lg', textClassName)}>{loading ? 'loading...' : name}</Text>
       </View>
     </TouchableOpacity>
   );

@@ -1,9 +1,11 @@
-import { Text, View } from 'react-native';
+import { Text, useColorScheme, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Slot, SplashScreen, Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
-import { SafeAreaView } from 'react-native-safe-area-context';
+// import {} from '@expo-google-font';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { clsx } from 'clsx';
 import 'react-native-url-polyfill/auto';
 
@@ -11,6 +13,7 @@ SplashScreen.preventAutoHideAsync(); // prevents splashscreen from auto hiding b
 
 const RootLayout = () => {
   const [darkmode, setDarkMode] = useState(true);
+  const color_scheme = useColorScheme();
   const [fonts_loaded, error] = useFonts({
     'Poppins-ExtraLight': require('@/assets/fonts/Poppins-ExtraLight.ttf'),
     'Poppins-Light': require('@/assets/fonts/Poppins-Light.ttf'),
@@ -33,8 +36,10 @@ const RootLayout = () => {
 
   return (
     <SafeAreaView className={clsx('h-full', darkmode ? 'bg-primary' : '')}>
+      {/* <ThemeProvider value={color_scheme !== 'dark' ? DarkTheme : DefaultTheme}> */}
       <Slot />
       <StatusBar style={!darkmode ? 'dark' : 'light'} backgroundColor={darkmode ? '#161622' : '#F2F2F2'} />
+      {/* </ThemeProvider> */}
     </SafeAreaView>
   );
 };
