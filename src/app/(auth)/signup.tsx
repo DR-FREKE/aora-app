@@ -7,6 +7,7 @@ import AppButton from '@/components/widgets/button';
 import { NoAccountComp } from '@/components/auth/auth';
 import { createUser } from '@/lib/appwrite/users/create.users';
 import { router } from 'expo-router';
+import { useGlobalContext } from '@/context/global-provider';
 
 export type SignUpProps = {
   username: string;
@@ -15,6 +16,7 @@ export type SignUpProps = {
 };
 
 const SignUp = () => {
+  const { setIsLoggedIn, setUser } = useGlobalContext();
   const { register, control, handleSubmit, formState, reset } = useForm<SignUpProps>({ mode: 'onChange' });
   const { errors, isDirty, isValid } = formState;
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +30,8 @@ const SignUp = () => {
       const result = await createUser(email, password, username);
 
       // set to global state using context API
+      setUser(result);
+      setIsLoggedIn(true);
 
       router.replace('/home');
     } catch (error: any) {

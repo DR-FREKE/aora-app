@@ -1,10 +1,15 @@
 import { Image, Platform, ScrollView, Text, View } from 'react-native';
-import { router } from 'expo-router';
+import { router, Redirect } from 'expo-router';
 import { images } from '@/constants';
 import AppButton from '@/components/widgets/button';
 import { clsx } from 'clsx';
+import { useGlobalContext } from '@/context/global-provider';
 
 export default function App() {
+  const { isLoading, isLoggedIn } = useGlobalContext();
+
+  if (!isLoading && isLoggedIn) return <Redirect href="(tabs)" />;
+
   // function to navigate to the sign in screen
   const handleNavigate = () => {
     router.push('/signin');

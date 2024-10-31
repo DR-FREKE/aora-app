@@ -32,7 +32,7 @@ const SignIn = () => {
       setUser(result);
       setIsLoggedIn(true);
 
-      router.replace('(tabs)');
+      router.replace('(tabs)'); // navigate to the dashboard page
     } catch (error: any) {
       Alert.alert(error.message);
     } finally {
